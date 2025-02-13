@@ -1,0 +1,78 @@
+{
+  "users": [
+    {
+      "email": "admin@sekolahkita.ac.id",
+      "password": "admin123"
+    }
+  ],
+  "articles": [
+    {
+      "id": "1",
+      "title": "Prestasi Gemilang Tim Robotik",
+      "content": "Tim robotik sekolah kita berhasil meraih juara pertama dalam kompetisi nasional. Prestasi ini merupakan hasil kerja keras dan dedikasi tim selama berbulan-bulan persiapan. Kompetisi yang diikuti melibatkan lebih dari 50 sekolah dari seluruh Indonesia.",
+      "image": "https://images.unsplash.com/photo-1589652717521-10c0d092dea9",
+      "date": "2024-03-10",
+      "author": "Admin"
+    },
+    {
+      "id": "2",
+      "title": "Program Literasi Digital",
+      "content": "Sekolah kita meluncurkan program literasi digital untuk meningkatkan kemampuan siswa dalam menggunakan teknologi secara bertanggung jawab. Program ini mencakup pelatihan keamanan online, etika digital, dan penggunaan produktif teknologi.",
+      "image": "https://images.unsplash.com/photo-1509062522246-3755977927d7",
+      "date": "2024-03-08",
+      "author": "Tim IT"
+    }
+  ],
+  "events": [
+    {
+      "id": "1",
+      "title": "Perayaan Hari Pendidikan Nasional",
+      "date": "2024-05-02",
+      "location": "Aula Sekolah",
+      "description": "Acara peringatan Hari Pendidikan Nasional dengan berbagai lomba dan penampilan dari siswa-siswi. Akan ada pameran karya siswa dan pentas seni."
+    },
+    {
+      "id": "2",
+      "title": "Seminar Pendidikan Karakter",
+      "date": "2024-04-15",
+      "location": "Ruang Multimedia",
+      "description": "Seminar tentang pentingnya pendidikan karakter dalam membentuk generasi muda yang berintegritas dan bertanggung jawab."
+    }
+  ],
+  "announcements": [
+    {
+      "id": "1",
+      "title": "Pendaftaran Siswa Baru 2024/2025",
+      "content": "Pendaftaran siswa baru tahun ajaran 2024/2025 telah dibuka. Orang tua calon siswa dapat mendaftar secara online melalui website sekolah atau datang langsung ke sekretariat PPDB.",
+      "date": "2024-03-15",
+      "important": true
+    },
+    {
+      "id": "2",
+      "title": "Jadwal Ujian Tengah Semester",
+      "content": "Ujian Tengah Semester akan dilaksanakan mulai tanggal 20 Maret 2024. Siswa diharapkan mempersiapkan diri dengan baik.",
+      "date": "2024-03-13",
+      "important": false
+    }
+  ],
+  "gallery": [
+    {
+      "id": "1",
+      "title": "Upacara Bendera",
+      "image": "https://images.unsplash.com/photo-1627556704302-624286467c65",
+      "date": "2024-03-01"
+    },
+    {
+      "id": "2",
+      "title": "Kegiatan Praktikum Sains",
+      "image": "https://images.unsplash.com/photo-1532094349884-543bc11b234d",
+      "date": "2024-03-05"
+    },
+    {
+      "id": "3",
+      "title": "Pertandingan Olahraga",
+      "image": "https://images.unsplash.com/photo-1577471488278-16eec37ffcc2",
+      "date": "2024-03-08"
+    }
+  ]
+}
