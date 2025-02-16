@@ -17,24 +17,24 @@ export default function Footer() {
             <div className="space-y-2">
               <p className="flex items-center text-gray-400">
                 <Phone className="h-5 w-5 mr-2" />
-                (061) 1234-5678
+                +62 812 6515 9098
               </p>
               <p className="flex items-center text-gray-400">
                 <Mail className="h-5 w-5 mr-2" />
-                info@sdiubaaz.sch.id
+                sdiubaaz@gmail.com
               </p>
               <p className="flex items-center text-gray-400">
-                <MapPin className="h-5 w-5 mr-2" />
-                Jl. Pendidikan No. 123, Tembung
+                <MapPin className="h-10 w-10 mr-2" />
+                Jl. Pusaka Pasar X Desa Bandar Khalifah Kecamatan Percut Sei Tuan Kabupaten Deli Serdang 20371
               </p>
             </div>
           </div>
           <div>
             <h3 className="text-lg font-semibold mb-4">Jam Operasional</h3>
             <div className="text-gray-400">
-              <p>Senin - Jumat: 07:00 - 15:00</p>
+              <p>Senin - Jumat: 07:00 - 17:00</p>
               <p>Sabtu: 07:00 - 12:00</p>
-              <p>Minggu: Tutup</p>
+              <p>Ahad: Tutup</p>
             </div>
           </div>
         </div>

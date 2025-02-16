@@ -1,14 +1,35 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Article } from '../lib/types';
-import content from '../data/content.json';
 import { Calendar, ArrowLeft } from 'lucide-react';
+import { getArticle } from '../lib/api';
+import { Article } from '../lib/types';
 
 export default function ArticleDetail() {
   const { id } = useParams();
-  const article = (content.articles as Article[]).find(a => a.id === id);
+  const [article, setArticle] = useState<Article | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!article) {
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        const data = await getArticle(id as string);
+        setArticle(data);
+      } catch (err) {
+        setError('Artikel tidak ditemukan.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticle();
+  }, [id]);
+
+  if (loading) {
+    return <p className="text-center text-gray-600">Memuat artikel...</p>;
+  }
+
+  if (error || !article) {
     return (
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center">
@@ -34,6 +55,7 @@ export default function ArticleDetail() {
           src={article.image}
           alt={article.title}
           className="w-full h-96 object-cover rounded-lg mb-8"
+          loading="lazy"
         />
         <h1 className="text-4xl font-bold text-gray-900 mb-4">{article.title}</h1>
         <div className="flex items-center text-gray-500 mb-8">

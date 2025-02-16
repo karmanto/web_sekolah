@@ -17,24 +17,23 @@ export default function Navbar() {
     { name: 'Galeri', href: '/gallery' },
   ];
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate('/');
   };
 
   return (
     <nav className="bg-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 min-[850px]:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Link to="/" className="text-xl font-bold text-indigo-600">
-                SDIUBAAZ
-              </Link>
-            </div>
-          </div>
+        <div className="flex-shrink-0 flex items-center">
+          <Link to="/" className="flex items-center space-x-2">
+            <img src="/sdiubaaz.png" alt="Logo SDIUBAAZ" className="h-10 w-auto" />
+            <span className="text-xl font-bold text-indigo-600">SDIUBAAZ</span>
+          </Link>
+        </div>
 
-          <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
+          <div className="hidden min-[850px]:ml-6 min-[850px]:flex min-[850px]:space-x-8">
             {navigation.map((item) => (
               <Link
                 key={item.name}
@@ -77,7 +76,7 @@ export default function Navbar() {
             )}
           </div>
 
-          <div className="flex items-center sm:hidden">
+          <div className="flex items-center min-[850px]:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
@@ -90,7 +89,7 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {isOpen && (
-        <div className="sm:hidden">
+        <div className="min-[850px]:hidden">
           <div className="pt-2 pb-3 space-y-1">
             {navigation.map((item) => (
               <Link

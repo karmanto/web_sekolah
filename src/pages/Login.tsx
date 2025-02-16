@@ -4,21 +4,31 @@ import { login } from '../lib/auth';
 import { Mail, Lock } from 'lucide-react';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/admin';
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setSuccessMessage(null);
 
-    if (login(email, password)) {
-      navigate(from, { replace: true });
-    } else {
-      setError('Email atau password salah');
+    try {
+      const success = await login(username, password);
+      if (success) {
+        setSuccessMessage('Login berhasil! Mengarahkan ke dashboard...');
+        setTimeout(() => {
+          navigate(from, { replace: true });
+        }, 2000); // Tunggu 2 detik sebelum redirect
+      } else {
+        setError('Username atau password salah');
+      }
+    } catch (error) {
+      setError('Terjadi kesalahan saat login');
     }
   };
 
@@ -35,19 +45,25 @@ export default function Login() {
           </div>
         )}
 
+        {successMessage && (
+          <div className="bg-green-50 text-green-600 p-4 rounded-lg mb-6">
+            {successMessage}
+          </div>
+        )}
+
         <form onSubmit={handleLogin} className="space-y-6">
           <div>
             <label className="block text-sm font-medium text-gray-700">
-              Email
+              Username
             </label>
             <div className="mt-1 relative">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Mail className="h-5 w-5 text-gray-400" />
               </div>
               <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
                 required
               />

@@ -14,23 +14,33 @@ export default function Home() {
 
       <main>
         {/* Hero Section */}
-        <section className="relative bg-indigo-600" aria-label="Banner Utama">
+        <section className="relative bg-black bg-opacity-50" aria-label="Banner Utama">
           <div className="absolute inset-0">
             <img
               className="w-full h-full object-cover"
-              src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1"
+              src="/bg1.jpg"
               alt="Gedung SD Islam Umar Bin Abdul Aziz yang asri dan nyaman"
               loading="eager"
             />
-            <div className="absolute inset-0 bg-indigo-600 mix-blend-multiply" />
+            <div className="absolute inset-0 bg-black bg-opacity-50" />
           </div>
-          <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8">
+          <div className="relative max-w-7xl mx-auto py-24 px-4 sm:py-32 sm:px-6 lg:px-8 text-center">
             <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl">
               Selamat Datang di SD Islam Umar Bin Abdul Aziz
             </h1>
-            <p className="mt-6 text-xl text-indigo-100 max-w-3xl">
+            <p className="mt-6 text-xl text-indigo-100 max-w-3xl mx-auto">
               Menjadi Mitra Bermutu Orang Tua dalam Menumbuhkan Karakter Generasi Islam
             </p>
+            <div className="mt-8">
+              <a
+                href="https://wa.me/6281265159098"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block px-6 py-3 text-lg font-semibold text-white bg-indigo-600 rounded-lg shadow-lg hover:bg-indigo-500 transition"
+              >
+                Hubungi Kami
+              </a>
+            </div>
           </div>
         </section>
 
@@ -52,12 +62,12 @@ export default function Home() {
               
               <div className="bg-white p-8 rounded-lg shadow-lg">
                 <h3 className="text-2xl font-bold text-indigo-600 mb-4">Misi</h3>
-                <ul className="text-gray-600 space-y-3">
-                  <li>1. Meningkatkan keilmuan dan keterampilan guru serta orang tua, lalu bersinergi dalam menerapkannya pada pendidikan anak.</li>
-                  <li>2. Menanamkan kecintaan anak kepada Allah, Rasulullah, dan Islam melalui keteladanan yang nyata.</li>
-                  <li>3. Mengamati, memetakan, dan menyesuaikan metode pembelajaran dengan gaya belajar anak agar lebih efektif.</li>
-                  <li>4. Menggali serta mengembangkan potensi dan bakat anak sesuai dengan tahap perkembangannya.</li>
-                </ul>
+                <ol className="text-gray-600 space-y-3 list-decimal pl-5">
+                  <li>Meningkatkan keilmuan dan keterampilan guru serta orang tua, lalu bersinergi dalam menerapkannya pada pendidikan anak.</li>
+                  <li>Menanamkan kecintaan anak kepada Allah, Rasulullah, dan Islam melalui keteladanan yang nyata.</li>
+                  <li>Mengamati, memetakan, dan menyesuaikan metode pembelajaran dengan gaya belajar anak agar lebih efektif.</li>
+                  <li>Menggali serta mengembangkan potensi dan bakat anak sesuai dengan tahap perkembangannya.</li>
+                </ol>
               </div>
             </div>
           </div>

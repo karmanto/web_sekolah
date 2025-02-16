@@ -1,14 +1,35 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Event } from '../lib/types';
-import content from '../data/content.json';
 import { Calendar, MapPin, ArrowLeft } from 'lucide-react';
+import { getEvent } from '../lib/api';
+import { Event } from '../lib/types';
 
 export default function EventDetail() {
   const { id } = useParams();
-  const event = (content.events as Event[]).find(e => e.id === id);
+  const [event, setEvent] = useState<Event | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!event) {
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const data = await getEvent(id as string);
+        setEvent(data);
+      } catch (err) {
+        setError('Agenda tidak ditemukan.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvent();
+  }, [id]);
+
+  if (loading) {
+    return <p className="text-center text-gray-600">Memuat agenda...</p>;
+  }
+
+  if (error || !event) {
     return (
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center">
@@ -31,7 +52,7 @@ export default function EventDetail() {
 
       <div className="bg-white rounded-lg shadow-lg p-8">
         <h1 className="text-4xl font-bold text-gray-900 mb-6">{event.title}</h1>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           <div className="flex items-center text-gray-600">
             <Calendar className="h-6 w-6 mr-3 text-indigo-600" />
@@ -47,7 +68,7 @@ export default function EventDetail() {
               </p>
             </div>
           </div>
-          
+
           <div className="flex items-center text-gray-600">
             <MapPin className="h-6 w-6 mr-3 text-indigo-600" />
             <div>

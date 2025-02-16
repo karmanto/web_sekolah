@@ -1,6 +1,6 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
-import { FileText, Calendar, Bell, Image, Settings } from 'lucide-react';
+import { FileText, Calendar, Bell, Image } from 'lucide-react';
 
 export default function Dashboard() {
   const modules = [
@@ -79,13 +79,16 @@ export default function Dashboard() {
                         <div className="relative flex space-x-3">
                           <div>
                             <span className="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white">
-                              <FileText className="h-5 w-5 text-white" />
+                              <Bell className="h-5 w-5 text-white" />
                             </span>
                           </div>
                           <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
                             <div>
                               <p className="text-sm text-gray-500">
-                                Artikel baru ditambahkan <span className="font-medium text-gray-900">Prestasi Gemilang Tim Robotik</span>
+                                Pengumuman baru diterbitkan{' '}
+                                <span className="font-medium text-gray-900">
+                                  Libur Nasional 2024
+                                </span>
                               </p>
                             </div>
                             <div className="text-right text-sm whitespace-nowrap text-gray-500">
@@ -94,12 +97,14 @@ export default function Dashboard() {
                           </div>
                         </div>
                       </li>
+                      {/* Item aktivitas lain dapat ditambahkan di sini */}
                     </ul>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          
         </div>
       </div>
     </div>

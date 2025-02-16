@@ -1,99 +1,113 @@
-import content from '../data/content.json';
-import { Article, Event, Announcement, GalleryItem, ContentType } from './types';
+import { Article, Event, Announcement, GalleryItem } from './types';
 
-// Helper function to generate unique ID
-const generateId = () => Math.random().toString(36).substr(2, 9);
+const API_URL = 'http://localhost:8000/api';
 
-// Helper function to save content
-const saveContent = (newContent: typeof content) => {
-  // In a real application, this would be an API call
-  Object.assign(content, newContent);
+interface FetchOptions extends RequestInit {
+  body?: string;
+}
+
+// === Fungsi fetch untuk request JSON ===
+export const fetchData = async <T>(endpoint: string, options: FetchOptions = {}): Promise<T> => {
+  const headers: HeadersInit = { 'Content-Type': 'application/json' };
+  if (options.method && options.method !== 'GET') {
+    headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+  }
+  
+  const response = await fetch(`${API_URL}/${endpoint}`, {
+    headers,
+    ...options
+  });
+  return response.json();
 };
 
-// Articles
-export const getArticles = (): Article[] => content.articles;
-
-export const addArticle = (article: Omit<Article, 'id'>) => {
-  const newArticle = { ...article, id: generateId() };
-  content.articles = [...content.articles, newArticle];
-  saveContent(content);
-  return newArticle;
+// === Fungsi fetch untuk request multipart/form-data (upload file) ===
+export const fetchMultipartData = async <T>(endpoint: string, options: RequestInit = {}): Promise<T> => {
+  // Jangan set Content-Type karena browser akan mengatur boundary-nya secara otomatis
+  const headers: HeadersInit = {};
+  if (options.method && options.method !== 'GET') {
+    headers['Authorization'] = `Bearer ${localStorage.getItem('token')}`;
+  }
+  
+  const response = await fetch(`${API_URL}/${endpoint}`, {
+    headers,
+    ...options
+  });
+  return response.json();
 };
 
-export const updateArticle = (id: string, article: Partial<Article>) => {
-  content.articles = content.articles.map(a => 
-    a.id === id ? { ...a, ...article } : a
-  );
-  saveContent(content);
+// ==== API Articles ====
+
+// GET semua artikel & GET satu artikel
+export const getArticles = async () => fetchData<Article[]>('articles');
+export const getArticle = async (id: string) => fetchData<Article>(`articles/${id}`);
+
+// POST & PUT artikel dengan kemungkinan upload gambar
+export const addArticle = async (article: Omit<Article, 'id'> & { image?: File }) => {
+  const formData = new FormData();
+  formData.append('title', article.title);
+  formData.append('content', article.content);
+  formData.append('date', article.date);
+  formData.append('author', article.author);
+  if (article.image) {
+    formData.append('image', article.image);
+  }
+  return fetchMultipartData<Article>('articles', { method: 'POST', body: formData });
 };
 
-export const deleteArticle = (id: string) => {
-  content.articles = content.articles.filter(a => a.id !== id);
-  saveContent(content);
+export const updateArticle = async (id: string, article: Partial<Omit<Article, 'id'> & { image?: File }>) => {
+  const formData = new FormData();
+  if (article.title) formData.append('title', article.title);
+  if (article.content) formData.append('content', article.content);
+  if (article.date) formData.append('date', article.date);
+  if (article.author) formData.append('author', article.author);
+  // Pastikan hanya append image jika memang merupakan File baru
+  if (article.image instanceof File) {
+    formData.append('image', article.image);
+  }
+  return fetchMultipartData<Article>(`articles/${id}`, { method: 'PUT', body: formData });
 };
 
-// Events
-export const getEvents = (): Event[] => content.events;
+export const deleteArticle = async (id: string) =>
+  fetchData<void>(`articles/${id}`, { method: 'DELETE' });
 
-export const addEvent = (event: Omit<Event, 'id'>) => {
-  const newEvent = { ...event, id: generateId() };
-  content.events = [...content.events, newEvent];
-  saveContent(content);
-  return newEvent;
+// ==== API Events (tidak ada file upload) ====
+export const getEvents = async () => fetchData<Event[]>('events');
+export const getEvent = async (id: string) => fetchData<Event>(`events/${id}`);
+export const addEvent = async (event: Omit<Event, 'id'>) =>
+  fetchData<Event>('events', { method: 'POST', body: JSON.stringify(event) });
+export const updateEvent = async (id: string, event: Partial<Event>) =>
+  fetchData<Event>(`events/${id}`, { method: 'PUT', body: JSON.stringify(event) });
+export const deleteEvent = async (id: string) =>
+  fetchData<void>(`events/${id}`, { method: 'DELETE' });
+
+// ==== API Announcements (tidak ada file upload) ====
+export const getAnnouncements = async () => fetchData<Announcement[]>('announcements');
+export const getAnnouncement = async (id: string) => fetchData<Announcement>(`announcements/${id}`);
+export const addAnnouncement = async (announcement: Omit<Announcement, 'id'>) =>
+  fetchData<Announcement>('announcements', { method: 'POST', body: JSON.stringify(announcement) });
+export const updateAnnouncement = async (id: string, announcement: Partial<Announcement>) =>
+  fetchData<Announcement>(`announcements/${id}`, { method: 'PUT', body: JSON.stringify(announcement) });
+export const deleteAnnouncement = async (id: string) =>
+  fetchData<void>(`announcements/${id}`, { method: 'DELETE' });
+
+// ==== API Gallery (memerlukan upload file) ====
+export const getGalleryItems = async () => fetchData<GalleryItem[]>('galleries');
+export const getGalleryItem = async (id: string) => fetchData<GalleryItem>(`galleries/${id}`);
+export const addGalleryItem = async (item: Omit<GalleryItem, 'id'> & { image: File }) => {
+  const formData = new FormData();
+  formData.append('title', item.title);
+  formData.append('date', item.date);
+  formData.append('image', item.image);
+  return fetchMultipartData<GalleryItem>('galleries', { method: 'POST', body: formData });
 };
-
-export const updateEvent = (id: string, event: Partial<Event>) => {
-  content.events = content.events.map(e => 
-    e.id === id ? { ...e, ...event } : e
-  );
-  saveContent(content);
+export const updateGalleryItem = async (id: string, item: Partial<Omit<GalleryItem, 'id'> & { image?: File }>) => {
+  const formData = new FormData();
+  if (item.title) formData.append('title', item.title);
+  if (item.date) formData.append('date', item.date);
+  if (item.image instanceof File) {
+    formData.append('image', item.image);
+  }
+  return fetchMultipartData<GalleryItem>(`galleries/${id}`, { method: 'PUT', body: formData });
 };
-
-export const deleteEvent = (id: string) => {
-  content.events = content.events.filter(e => e.id !== id);
-  saveContent(content);
-};
-
-// Announcements
-export const getAnnouncements = (): Announcement[] => content.announcements;
-
-export const addAnnouncement = (announcement: Omit<Announcement, 'id'>) => {
-  const newAnnouncement = { ...announcement, id: generateId() };
-  content.announcements = [...content.announcements, newAnnouncement];
-  saveContent(content);
-  return newAnnouncement;
-};
-
-export const updateAnnouncement = (id: string, announcement: Partial<Announcement>) => {
-  content.announcements = content.announcements.map(a => 
-    a.id === id ? { ...a, ...announcement } : a
-  );
-  saveContent(content);
-};
-
-export const deleteAnnouncement = (id: string) => {
-  content.announcements = content.announcements.filter(a => a.id !== id);
-  saveContent(content);
-};
-
-// Gallery
-export const getGalleryItems = (): GalleryItem[] => content.gallery;
-
-export const addGalleryItem = (item: Omit<GalleryItem, 'id'>) => {
-  const newItem = { ...item, id: generateId() };
-  content.gallery = [...content.gallery, newItem];
-  saveContent(content);
-  return newItem;
-};
-
-export const updateGalleryItem = (id: string, item: Partial<GalleryItem>) => {
-  content.gallery = content.gallery.map(i => 
-    i.id === id ? { ...i, ...item } : i
-  );
-  saveContent(content);
-};
-
-export const deleteGalleryItem = (id: string) => {
-  content.gallery = content.gallery.filter(i => i.id !== id);
-  saveContent(content);
-};
+export const deleteGalleryItem = async (id: string) =>
+  fetchData<void>(`galleries/${id}`, { method: 'DELETE' });

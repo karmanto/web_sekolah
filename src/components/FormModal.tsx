@@ -2,10 +2,23 @@ import React from 'react';
 import { X } from 'lucide-react';
 import { FormModalProps } from '../lib/types';
 
+// Definisi tipe data untuk form
+type FormDataType = {
+  title: string;
+  content?: string;
+  image?: string;
+  date: string;
+  author?: string;
+  location?: string;
+  description?: string;
+  important?: boolean;
+};
+
 export default function FormModal({ isOpen, onClose, onSubmit, initialData, type }: FormModalProps) {
   if (!isOpen) return null;
 
-  const [formData, setFormData] = React.useState(
+  // State dengan tipe data yang sudah didefinisikan
+  const [formData, setFormData] = React.useState<FormDataType>(
     initialData || {
       title: '',
       content: '',
@@ -26,7 +39,8 @@ export default function FormModal({ isOpen, onClose, onSubmit, initialData, type
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
-    setFormData(prev => ({
+
+    setFormData((prev: FormDataType) => ({
       ...prev,
       [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value
     }));
@@ -54,7 +68,7 @@ export default function FormModal({ isOpen, onClose, onSubmit, initialData, type
               name="title"
               value={formData.title}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               required
             />
           </div>
@@ -64,10 +78,10 @@ export default function FormModal({ isOpen, onClose, onSubmit, initialData, type
               <label className="block text-sm font-medium text-gray-700">Konten</label>
               <textarea
                 name="content"
-                value={formData.content}
+                value={formData.content || ''}
                 onChange={handleChange}
-                rows={4}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                rows={6}
+                className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -79,9 +93,9 @@ export default function FormModal({ isOpen, onClose, onSubmit, initialData, type
               <input
                 type="url"
                 name="image"
-                value={formData.image}
+                value={formData.image || ''}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -93,9 +107,9 @@ export default function FormModal({ isOpen, onClose, onSubmit, initialData, type
               <input
                 type="text"
                 name="author"
-                value={formData.author}
+                value={formData.author || ''}
                 onChange={handleChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                 required
               />
             </div>
@@ -108,9 +122,9 @@ export default function FormModal({ isOpen, onClose, onSubmit, initialData, type
                 <input
                   type="text"
                   name="location"
-                  value={formData.location}
+                  value={formData.location || ''}
                   onChange={handleChange}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   required
                 />
               </div>
@@ -118,10 +132,10 @@ export default function FormModal({ isOpen, onClose, onSubmit, initialData, type
                 <label className="block text-sm font-medium text-gray-700">Deskripsi</label>
                 <textarea
                   name="description"
-                  value={formData.description}
+                  value={formData.description || ''}
                   onChange={handleChange}
-                  rows={4}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                  rows={6}
+                  className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                   required
                 />
               </div>
@@ -133,7 +147,7 @@ export default function FormModal({ isOpen, onClose, onSubmit, initialData, type
               <input
                 type="checkbox"
                 name="important"
-                checked={formData.important}
+                checked={formData.important || false}
                 onChange={handleChange}
                 className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
               />
@@ -150,7 +164,7 @@ export default function FormModal({ isOpen, onClose, onSubmit, initialData, type
               name="date"
               value={formData.date}
               onChange={handleChange}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+              className="p-1 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
               required
             />
           </div>

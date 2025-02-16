@@ -2,7 +2,7 @@ export interface Article {
   id: string;
   title: string;
   content: string;
-  image: string;
+  image?: string | File; // URL (string) dari API atau File saat upload
   date: string;
   author: string;
 }
@@ -26,16 +26,16 @@ export interface Announcement {
 export interface GalleryItem {
   id: string;
   title: string;
-  image: string;
+  image: string | File; // URL (string) dari API atau File saat upload
   date: string;
 }
 
-export type ContentType = 'articles' | 'events' | 'announcements' | 'gallery';
+export type ContentType = 'articles' | 'events' | 'announcements' | 'galleries';
 
-export interface FormModalProps {
+export interface FormModalProps<T = any> {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (data: any) => void;
-  initialData?: any;
+  onSubmit: (data: T) => void;
+  initialData?: T;
   type: ContentType;
 }
