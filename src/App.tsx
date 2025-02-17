@@ -1,3 +1,4 @@
+// App.tsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -12,7 +13,7 @@ import Gallery from './pages/Gallery';
 import GalleryDetail from './pages/GalleryDetail';
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
-import AdminArticles from './pages/admin/articles'; // file index
+import AdminArticles from './pages/admin/articles';
 import CreateArticle from './pages/admin/articles/create';
 import EditArticle from './pages/admin/articles/edit';
 import AdminEvents from './pages/admin/events';
@@ -21,7 +22,9 @@ import EditEvent from './pages/admin/events/edit';
 import AdminAnnouncements from './pages/admin/announcements';
 import CreateAnnouncement from './pages/admin/announcements/create';
 import EditAnnouncement from './pages/admin/announcements/edit';
-import AdminGallery from './pages/admin/Gallery';
+import AdminGallery from './pages/admin/galleries';
+import CreateGallery from './pages/admin/galleries/create';
+import EditGallery from './pages/admin/galleries/edit';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -129,6 +132,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AdminGallery />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/gallery/create"
+              element={
+                <ProtectedRoute>
+                  <CreateGallery />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/gallery/edit/:id"
+              element={
+                <ProtectedRoute>
+                  <EditGallery />
                 </ProtectedRoute>
               }
             />

@@ -109,14 +109,23 @@ export const addGalleryItem = async (item: Omit<GalleryItem, 'id'> & { image: Fi
   formData.append('image', item.image);
   return fetchMultipartData<GalleryItem>('galleries', { method: 'POST', body: formData });
 };
-export const updateGalleryItem = async (id: string, item: Partial<Omit<GalleryItem, 'id'> & { image?: File }>) => {
+export const updateGalleryItem = async (
+  id: string,
+  item: Partial<Omit<GalleryItem, 'id'> & { image?: File }>
+) => {
   const formData = new FormData();
   if (item.title) formData.append('title', item.title);
   if (item.date) formData.append('date', item.date);
   if (item.image instanceof File) {
     formData.append('image', item.image);
   }
-  return fetchMultipartData<GalleryItem>(`galleries/${id}`, { method: 'PUT', body: formData });
+  // Tambahkan method override agar backend (misalnya Laravel) menganggapnya sebagai PUT
+  formData.append('_method', 'PUT');
+
+  return fetchMultipartData<GalleryItem>(`galleries/${id}`, {
+    method: 'POST',
+    body: formData,
+  });
 };
 export const deleteGalleryItem = async (id: string) =>
   fetchData<void>(`galleries/${id}`, { method: 'DELETE' });

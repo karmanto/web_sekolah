@@ -45,51 +45,58 @@ export default function Articles() {
 
         {!loading && !error && (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {articles.map((article) => (
-              <article key={article.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <img
-                  className="w-full h-64 object-contain rounded-lg"
-                  src={
-                    typeof article.image === 'string'
-                      ? `${API_URL}/storage/${article.image}`
-                      : article.image
-                      ? URL.createObjectURL(article.image)
-                      : ''
-                  }
-                  alt="Article"
-                />
-                <div className="p-6">
-                  <div className="flex items-center text-sm text-gray-500 mb-2">
-                    <Calendar className="h-4 w-4 mr-2" aria-hidden="true" />
-                    {new Date(article.date).toLocaleDateString('id-ID', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-2">
-                    {article.title}
-                  </h2>
-                  <div className="prose prose-lg max-w-none">
-                    <div
-                      className="text-gray-600 line-clamp-2"
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(article.content),
-                      }}
+            {articles.length > 0 ? 
+              (
+                articles.map((article) => (
+                  <article key={article.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+                    <img
+                      className="w-full h-64 object-contain rounded-lg"
+                      src={
+                        typeof article.image === 'string'
+                          ? `${API_URL}/storage/${article.image}`
+                          : article.image
+                          ? URL.createObjectURL(article.image)
+                          : ''
+                      }
+                      alt="Article"
                     />
-                  </div>
-                  <div className="mt-4">
-                    <Link
-                      to={`/articles/${article.id}`}
-                      className="text-indigo-600 hover:text-indigo-800 font-medium"
-                      aria-label={`Baca selengkapnya tentang ${article.title}`}
-                    >
-                      Baca selengkapnya
-                    </Link>
-                  </div>
-                </div>
-              </article>
-            ))}
+                    <div className="p-6">
+                      <div className="flex items-center text-sm text-gray-500 mb-2">
+                        <Calendar className="h-4 w-4 mr-2" aria-hidden="true" />
+                        {new Date(article.date).toLocaleDateString('id-ID', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </div>
+                      <h2 className="text-xl font-semibold text-gray-900 mb-2">
+                        {article.title}
+                      </h2>
+                      <div className="prose prose-lg max-w-none">
+                        <div
+                          className="text-gray-600 line-clamp-2"
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(article.content),
+                          }}
+                        />
+                      </div>
+                      <div className="mt-4">
+                        <Link
+                          to={`/articles/${article.id}`}
+                          className="text-indigo-600 hover:text-indigo-800 font-medium"
+                          aria-label={`Baca selengkapnya tentang ${article.title}`}
+                        >
+                          Baca selengkapnya
+                        </Link>
+                      </div>
+                    </div>
+                  </article>
+                ))
+              ) : 
+              (
+                <p className="text-center text-gray-500">Tidak ada artikel saat ini.</p>
+              )
+            }
           </div>
         )}
       </main>
