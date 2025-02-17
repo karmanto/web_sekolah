@@ -12,7 +12,9 @@ import Gallery from './pages/Gallery';
 import GalleryDetail from './pages/GalleryDetail';
 import Login from './pages/Login';
 import Dashboard from './pages/admin/Dashboard';
-import AdminArticles from './pages/admin/Articles';
+import AdminArticles from './pages/admin/articles'; // file index
+import CreateArticle from './pages/admin/articles/create';
+import EditArticle from './pages/admin/articles/edit';
 import AdminEvents from './pages/admin/events';
 import CreateEvent from './pages/admin/events/create';
 import EditEvent from './pages/admin/events/edit';
@@ -55,6 +57,22 @@ function App() {
               element={
                 <ProtectedRoute>
                   <AdminArticles />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/articles/create"
+              element={
+                <ProtectedRoute>
+                  <CreateArticle />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/articles/edit/:id"
+              element={
+                <ProtectedRoute>
+                  <EditArticle />
                 </ProtectedRoute>
               }
             />

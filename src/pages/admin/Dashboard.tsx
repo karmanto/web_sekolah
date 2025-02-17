@@ -1,32 +1,64 @@
-
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, Calendar, Bell, Image } from 'lucide-react';
+import { getArticles, getEvents, getAnnouncements, getGalleryItems } from '../../lib/api';
 
 export default function Dashboard() {
+  const [dataCounts, setDataCounts] = useState({
+    articles: 0,
+    events: 0,
+    announcements: 0,
+    galleries: 0,
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [articles, events, announcements, galleries] = await Promise.all([
+          getArticles(),
+          getEvents(),
+          getAnnouncements(),
+          getGalleryItems(),
+        ]);
+
+        setDataCounts({
+          articles: articles.length,
+          events: events.length,
+          announcements: announcements.length,
+          galleries: galleries.length,
+        });
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const modules = [
     {
       title: 'Artikel',
       icon: FileText,
       link: '/admin/articles',
-      count: 12,
+      count: dataCounts.articles,
     },
     {
       title: 'Agenda',
       icon: Calendar,
       link: '/admin/events',
-      count: 5,
+      count: dataCounts.events,
     },
     {
       title: 'Pengumuman',
       icon: Bell,
       link: '/admin/announcements',
-      count: 8,
+      count: dataCounts.announcements,
     },
     {
       title: 'Galeri',
       icon: Image,
       link: '/admin/gallery',
-      count: 24,
+      count: dataCounts.galleries,
     },
   ];
 
@@ -35,7 +67,7 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-          
+
           <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {modules.map((module) => (
               <Link
@@ -65,46 +97,6 @@ export default function Dashboard() {
               </Link>
             ))}
           </div>
-
-          <div className="mt-8">
-            <div className="bg-white shadow rounded-lg">
-              <div className="px-4 py-5 sm:p-6">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">
-                  Aktivitas Terbaru
-                </h3>
-                <div className="mt-5">
-                  <div className="flow-root">
-                    <ul className="-mb-8">
-                      <li className="relative pb-8">
-                        <div className="relative flex space-x-3">
-                          <div>
-                            <span className="h-8 w-8 rounded-full bg-gray-400 flex items-center justify-center ring-8 ring-white">
-                              <Bell className="h-5 w-5 text-white" />
-                            </span>
-                          </div>
-                          <div className="min-w-0 flex-1 pt-1.5 flex justify-between space-x-4">
-                            <div>
-                              <p className="text-sm text-gray-500">
-                                Pengumuman baru diterbitkan{' '}
-                                <span className="font-medium text-gray-900">
-                                  Libur Nasional 2024
-                                </span>
-                              </p>
-                            </div>
-                            <div className="text-right text-sm whitespace-nowrap text-gray-500">
-                              <time dateTime="2024-03-10">10 Mar 2024</time>
-                            </div>
-                          </div>
-                        </div>
-                      </li>
-                      {/* Item aktivitas lain dapat ditambahkan di sini */}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { Article, Event, Announcement, GalleryItem } from './types';
 
-const API_URL = 'http://localhost:8000/api';
+const API_URL = import.meta.env.VITE_API_URL + "/api";
 
 interface FetchOptions extends RequestInit {
   body?: string;
@@ -36,7 +36,6 @@ export const fetchMultipartData = async <T>(endpoint: string, options: RequestIn
 };
 
 // ==== API Articles ====
-
 // GET semua artikel & GET satu artikel
 export const getArticles = async () => fetchData<Article[]>('articles');
 export const getArticle = async (id: string) => fetchData<Article>(`articles/${id}`);
@@ -54,17 +53,27 @@ export const addArticle = async (article: Omit<Article, 'id'> & { image?: File }
   return fetchMultipartData<Article>('articles', { method: 'POST', body: formData });
 };
 
-export const updateArticle = async (id: string, article: Partial<Omit<Article, 'id'> & { image?: File }>) => {
+// UPDATE artikel (menggunakan method override)
+export const updateArticle = async (
+  id: string,
+  article: Partial<Omit<Article, 'id'> & { image?: File }>
+) => {
   const formData = new FormData();
   if (article.title) formData.append('title', article.title);
   if (article.content) formData.append('content', article.content);
   if (article.date) formData.append('date', article.date);
   if (article.author) formData.append('author', article.author);
-  // Pastikan hanya append image jika memang merupakan File baru
+  // Hanya append image jika merupakan file baru
   if (article.image instanceof File) {
     formData.append('image', article.image);
   }
-  return fetchMultipartData<Article>(`articles/${id}`, { method: 'PUT', body: formData });
+  // Tambahkan method override agar Laravel menganggapnya sebagai PUT
+  formData.append('_method', 'PUT');
+
+  return fetchMultipartData<Article>(`articles/${id}`, {
+    method: 'POST',
+    body: formData,
+  });
 };
 
 export const deleteArticle = async (id: string) =>

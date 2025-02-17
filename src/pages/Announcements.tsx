@@ -79,13 +79,14 @@ export default function Announcements() {
                           day: 'numeric',
                         })}
                       </div>
-                      {/* Render rich text content dengan DOMPurify */}
-                      <div
-                        className="text-gray-600"
-                        dangerouslySetInnerHTML={{
-                          __html: DOMPurify.sanitize(announcement.content),
-                        }}
-                      />
+                      <div className="prose prose-lg max-w-none">
+                        <div
+                          className="text-gray-600 line-clamp-2"
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(announcement.content),
+                          }}
+                        />
+                      </div>
                       <div className="flex justify-end mt-4">
                         <Link
                           to={`/announcements/${announcement.id}`}

@@ -4,6 +4,9 @@ import { Helmet } from 'react-helmet-async';
 import { Calendar } from 'lucide-react';
 import { getArticles } from '../lib/api';
 import { Article } from '../lib/types';
+import DOMPurify from 'dompurify';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function Articles() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -45,10 +48,15 @@ export default function Articles() {
             {articles.map((article) => (
               <article key={article.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
                 <img
-                  src={article.image}
-                  alt={`${article.title} - SD Islam Umar Bin Abdul Aziz`}
-                  className="w-full h-48 object-cover"
-                  loading="lazy"
+                  className="w-full h-64 object-contain rounded-lg"
+                  src={
+                    typeof article.image === 'string'
+                      ? `${API_URL}/storage/${article.image}`
+                      : article.image
+                      ? URL.createObjectURL(article.image)
+                      : ''
+                  }
+                  alt="Article"
                 />
                 <div className="p-6">
                   <div className="flex items-center text-sm text-gray-500 mb-2">
@@ -62,7 +70,14 @@ export default function Articles() {
                   <h2 className="text-xl font-semibold text-gray-900 mb-2">
                     {article.title}
                   </h2>
-                  <p className="text-gray-600 line-clamp-3">{article.content}</p>
+                  <div className="prose prose-lg max-w-none">
+                    <div
+                      className="text-gray-600 line-clamp-2"
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(article.content),
+                      }}
+                    />
+                  </div>
                   <div className="mt-4">
                     <Link
                       to={`/articles/${article.id}`}

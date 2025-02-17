@@ -3,6 +3,9 @@ import { useParams, Link } from 'react-router-dom';
 import { Calendar, ArrowLeft } from 'lucide-react';
 import { getArticle } from '../lib/api';
 import { Article } from '../lib/types';
+import DOMPurify from 'dompurify';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function ArticleDetail() {
   const { id } = useParams();
@@ -52,10 +55,13 @@ export default function ArticleDetail() {
 
       <article>
         <img
-          src={article.image}
-          alt={article.title}
-          className="w-full h-96 object-cover rounded-lg mb-8"
-          loading="lazy"
+          src={
+              typeof article.image === 'string'
+              ? `${API_URL}/storage/${article.image}`
+              : article.image
+              ? URL.createObjectURL(article.image)
+              : ''
+          }
         />
         <h1 className="text-4xl font-bold text-gray-900 mb-4">{article.title}</h1>
         <div className="flex items-center text-gray-500 mb-8">
@@ -65,7 +71,12 @@ export default function ArticleDetail() {
           <span>Oleh: {article.author}</span>
         </div>
         <div className="prose prose-lg max-w-none">
-          <p className="text-gray-600 whitespace-pre-line">{article.content}</p>
+          <div
+            className="text-gray-600"
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(article.content),
+            }}
+          />
         </div>
       </article>
     </div>

@@ -68,7 +68,6 @@ export default function AnnouncementDetail() {
           <span>{new Date(announcement.date).toLocaleDateString('id-ID')}</span>
         </div>
         <div className="prose prose-lg max-w-none">
-          {/* Render rich text content dengan DOMPurify */}
           <div
             className="text-gray-600"
             dangerouslySetInnerHTML={{
