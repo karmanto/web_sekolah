@@ -9,7 +9,7 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">SD ISLAM UMAR BIN ABDUL AZIZ</h3>
             <p className="text-gray-400">
-              Menjadi Mitra Bermutu Orang Tua dalam Menumbuhkan Karakter Generasi Islam.
+              Menjadi Mitra Bermutu Orang Tua dalam Menumbuhkan Karakter Generasi Islam (Karakter Iman, Karakter Belajar, Karakter Bakat).
             </p>
           </div>
           <div>
@@ -32,8 +32,9 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Jam Operasional</h3>
             <div className="text-gray-400">
-              <p>Senin - Jumat: 07:00 - 17:00</p>
-              <p>Sabtu: 07:00 - 12:00</p>
+              <p>Senin - Kamis: 07:25 - 12:00</p>
+              <p>Jumat: 07:12 - 10:45</p>
+              <p>Sabtu: 07:12 - 10:30</p>
               <p>Ahad: Tutup</p>
             </div>
           </div>

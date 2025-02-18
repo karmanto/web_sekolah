@@ -29,7 +29,7 @@ export default function Home() {
               Selamat Datang di SD Islam Umar Bin Abdul Aziz
             </h1>
             <p className="mt-6 text-xl text-indigo-100 max-w-3xl mx-auto">
-              Menjadi Mitra Bermutu Orang Tua dalam Menumbuhkan Karakter Generasi Islam
+              Menjadi Mitra Bermutu Orang Tua dalam Menumbuhkan Karakter Generasi Islam (Karakter Iman, Karakter Belajar, Karakter Bakat).
             </p>
             <div className="mt-8">
               <a
