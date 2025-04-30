@@ -56,6 +56,11 @@ export default function GalleryDetail() {
         Kembali ke galeri
       </Link>
       <article>
+        <h1 className="text-4xl font-bold text-gray-900 mb-4">{item.title}</h1>
+        <div className="flex items-center text-gray-500 mb-8">
+          <Calendar className="h-5 w-5 mr-2" />
+          <span>{new Date(item.date).toLocaleDateString('id-ID')}</span>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {item.images.map(img => (
             <div key={img.id} className="flex flex-col">
@@ -67,11 +72,6 @@ export default function GalleryDetail() {
               <p className="mt-2 text-gray-700">{img.description}</p>
             </div>
           ))}
-        </div>
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">{item.title}</h1>
-        <div className="flex items-center text-gray-500 mb-8">
-          <Calendar className="h-5 w-5 mr-2" />
-          <span>{new Date(item.date).toLocaleDateString('id-ID')}</span>
         </div>
       </article>
     </div>
