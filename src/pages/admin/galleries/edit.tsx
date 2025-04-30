@@ -13,6 +13,7 @@ export default function EditGallery() {
   const [date, setDate] = useState('')
   const [newFiles, setNewFiles] = useState<File[]>([])
   const [newDescs, setNewDescs] = useState<string[]>([])
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   useEffect(() => {
     if (!id) return
@@ -22,6 +23,17 @@ export default function EditGallery() {
       setDate(data.date)
     })
   }, [id])
+
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isSubmitting) {
+        e.preventDefault()
+        e.returnValue = ''
+      }
+    }
+    window.addEventListener('beforeunload', handleBeforeUnload)
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload)
+  }, [isSubmitting])
 
   const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const chosen = e.target.files ? Array.from(e.target.files) : []
@@ -38,13 +50,18 @@ export default function EditGallery() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!id) return
-    await updateGalleryItem(id, {
-      title,
-      date,
-      images: newFiles.length ? newFiles : undefined,
-      descriptions: newDescs.length ? newDescs : undefined
-    })
-    navigate('/admin/gallery')
+    setIsSubmitting(true)
+    try {
+      await updateGalleryItem(id, {
+        title,
+        date,
+        images: newFiles.length ? newFiles : undefined,
+        descriptions: newDescs.length ? newDescs : undefined
+      })
+      navigate('/admin/gallery')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   if (!galleryItem) return <p>Loading...</p>
@@ -55,15 +72,36 @@ export default function EditGallery() {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Judul</label>
-          <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
+          <input
+            type="text"
+            value={title}
+            onChange={e => setTitle(e.target.value)}
+            disabled={isSubmitting}
+            className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            required
+          />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Tanggal</label>
-          <input type="date" value={date} onChange={e => setDate(e.target.value)} className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm" required />
+          <input
+            type="date"
+            value={date}
+            onChange={e => setDate(e.target.value)}
+            disabled={isSubmitting}
+            className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+            required
+          />
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700">Gambar Baru</label>
-          <input type="file" accept="image/*" multiple onChange={handleFilesChange} className="p-2 mt-1 block w-full" />
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleFilesChange}
+            disabled={isSubmitting}
+            className="p-2 mt-1 block w-full"
+          />
         </div>
         {newFiles.map((file, idx) => (
           <div key={idx}>
@@ -73,6 +111,7 @@ export default function EditGallery() {
               placeholder="Deskripsi singkat"
               value={newDescs[idx]}
               onChange={e => handleDescChange(idx, e.target.value)}
+              disabled={isSubmitting}
               className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             />
           </div>
@@ -88,8 +127,14 @@ export default function EditGallery() {
           </div>
         )}
         <div>
-          <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
-            Simpan Perubahan
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`px-4 py-2 rounded-md text-white ${
+              isSubmitting ? 'bg-gray-400 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'
+            }`}
+          >
+            {isSubmitting ? 'Menyimpan...' : 'Simpan Perubahan'}
           </button>
         </div>
       </form>
