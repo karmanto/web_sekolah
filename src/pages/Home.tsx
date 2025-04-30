@@ -73,6 +73,18 @@ export default function Home() {
           </div>
         </section>
 
+        {/* Informasi Penting Section */}
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-3xl font-bold text-gray-900 mb-8">Informasi Penting</h2>
+            <img
+              src="https://drive.google.com/thumbnail?authuser=0&sz=w640&id=1oTHrdjwtLEoMSuh2ESuwOHnukpPBZmHX"
+              alt="Informasi Penting Thumbnail"
+              className="mx-auto"
+            />
+          </div>
+        </section>
+
         {/* Featured Sections */}
         <section className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8" aria-label="Fitur Utama">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

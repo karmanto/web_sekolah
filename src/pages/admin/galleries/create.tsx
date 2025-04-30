@@ -1,27 +1,22 @@
-// pages/admin/gallery/create.tsx
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { addGalleryItem } from '../../../lib/api';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { addGalleryItem } from '../../../lib/api'
 
 export default function CreateGallery() {
-  const navigate = useNavigate();
-  const [title, setTitle] = useState('');
-  const [date, setDate] = useState('');
-  const [image, setImage] = useState<File | null>(null);
+  const navigate = useNavigate()
+  const [title, setTitle] = useState('')
+  const [date, setDate] = useState('')
+  const [images, setImages] = useState<File[]>([])
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!image) {
-      alert('Gambar wajib diunggah!');
-      return;
+    e.preventDefault()
+    if (images.length === 0) {
+      alert('Gambar wajib diunggah!')
+      return
     }
-    try {
-      await addGalleryItem({ title, date, image });
-      navigate('/admin/gallery');
-    } catch (error) {
-      console.error('Gagal menambahkan foto:', error);
-    }
-  };
+    await addGalleryItem({ title, date, images })
+    navigate('/admin/gallery')
+  }
 
   return (
     <div className="max-w-3xl mx-auto py-8 px-2">
@@ -32,7 +27,7 @@ export default function CreateGallery() {
           <input
             type="text"
             value={title}
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={e => setTitle(e.target.value)}
             className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             required
           />
@@ -42,7 +37,7 @@ export default function CreateGallery() {
           <input
             type="date"
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={e => setDate(e.target.value)}
             className="p-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm"
             required
           />
@@ -52,9 +47,10 @@ export default function CreateGallery() {
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => {
-              if (e.target.files && e.target.files[0]) {
-                setImage(e.target.files[0]);
+            multiple
+            onChange={e => {
+              if (e.target.files) {
+                setImages(Array.from(e.target.files))
               }
             }}
             className="p-2 mt-1 block w-full"
@@ -62,14 +58,11 @@ export default function CreateGallery() {
           />
         </div>
         <div>
-          <button
-            type="submit"
-            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700"
-          >
+          <button type="submit" className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">
             Simpan
           </button>
         </div>
       </form>
     </div>
-  );
+  )
 }

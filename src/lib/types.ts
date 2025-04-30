@@ -23,19 +23,26 @@ export interface Announcement {
   important: boolean;
 }
 
-export interface GalleryItem {
-  id: string;
-  title: string;
-  image: string | File; // URL (string) dari API atau File saat upload
-  date: string;
+export interface GalleryImage {
+  id: string
+  image: string
+  created_at: string
+  updated_at: string
 }
 
-export type ContentType = 'articles' | 'events' | 'announcements' | 'galleries';
+export interface GalleryItem {
+  id: string
+  title: string
+  date: string
+  images: GalleryImage[]
+}
+
+export type ContentType = 'articles' | 'events' | 'announcements' | 'galleries'
 
 export interface FormModalProps<T = any> {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (data: T) => void;
-  initialData?: T;
-  type: ContentType;
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: (data: T) => void
+  initialData?: T
+  type: ContentType
 }

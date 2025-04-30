@@ -100,32 +100,33 @@ export const deleteAnnouncement = async (id: string) =>
   fetchData<void>(`announcements/${id}`, { method: 'DELETE' });
 
 // ==== API Gallery (memerlukan upload file) ====
-export const getGalleryItems = async () => fetchData<GalleryItem[]>('galleries');
-export const getGalleryItem = async (id: string) => fetchData<GalleryItem>(`galleries/${id}`);
-export const addGalleryItem = async (item: Omit<GalleryItem, 'id'> & { image: File }) => {
-  const formData = new FormData();
-  formData.append('title', item.title);
-  formData.append('date', item.date);
-  formData.append('image', item.image);
-  return fetchMultipartData<GalleryItem>('galleries', { method: 'POST', body: formData });
-};
+export const getGalleryItems = async () => fetchData<GalleryItem[]>('galleries')
+export const getGalleryItem = async (id: string) => fetchData<GalleryItem>(`galleries/${id}`)
+export const addGalleryItem = async (item: Omit<GalleryItem, 'id' | 'images'> & { images: File[] }) => {
+  const formData = new FormData()
+  formData.append('title', item.title)
+  formData.append('date', item.date)
+  item.images.forEach(file => formData.append('images[]', file))
+  return fetchMultipartData<GalleryItem>('galleries', {
+    method: 'POST',
+    body: formData
+  })
+}
 export const updateGalleryItem = async (
   id: string,
-  item: Partial<Omit<GalleryItem, 'id'> & { image?: File }>
+  item: Partial<Omit<GalleryItem, 'id' | 'images'> & { images?: File[] }>
 ) => {
-  const formData = new FormData();
-  if (item.title) formData.append('title', item.title);
-  if (item.date) formData.append('date', item.date);
-  if (item.image instanceof File) {
-    formData.append('image', item.image);
+  const formData = new FormData()
+  if (item.title) formData.append('title', item.title)
+  if (item.date) formData.append('date', item.date)
+  if (item.images) {
+    item.images.forEach(file => formData.append('images[]', file))
   }
-  // Tambahkan method override agar backend (misalnya Laravel) menganggapnya sebagai PUT
-  formData.append('_method', 'PUT');
-
+  formData.append('_method', 'PUT')
   return fetchMultipartData<GalleryItem>(`galleries/${id}`, {
     method: 'POST',
-    body: formData,
-  });
-};
+    body: formData
+  })
+}
 export const deleteGalleryItem = async (id: string) =>
-  fetchData<void>(`galleries/${id}`, { method: 'DELETE' });
+  fetchData<void>(`galleries/${id}`, { method: 'DELETE' })

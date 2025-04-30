@@ -33,8 +33,8 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Jam Operasional</h3>
             <div className="text-gray-400">
               <p>Senin - Kamis: 07:25 - 12:00</p>
-              <p>Jumat: 07:12 - 10:45</p>
-              <p>Sabtu: 07:12 - 10:30</p>
+              <p>Jumat: 07:25 - 10:45</p>
+              <p>Sabtu: 07:25 - 10:30</p>
               <p>Ahad: Tutup</p>
             </div>
           </div>
