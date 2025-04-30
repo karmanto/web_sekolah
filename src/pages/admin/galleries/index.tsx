@@ -39,15 +39,13 @@ export default function AdminGallery() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {gallery.map(item => {
-            const firstImage = item.images[0]?.image ?? ''
+            const img = item.images[0]
+            const src = img ? `${API_URL}/storage/${img.image}` : ''
+            const desc = img?.description ?? ''
             return (
               <div key={item.id} className="bg-white rounded-lg shadow-md overflow-hidden">
                 <div className="relative">
-                  <img
-                    src={`${API_URL}/storage/${firstImage}`}
-                    alt={item.title}
-                    className="w-full h-48 object-cover"
-                  />
+                  <img src={src} alt={item.title} className="w-full h-48 object-cover" />
                   <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-3">
                     <Link to={`/admin/gallery/edit/${item.id}`} className="bg-white p-2 rounded-full hover:bg-gray-100">
                       <Edit className="h-5 w-5 text-gray-600" />
@@ -59,6 +57,7 @@ export default function AdminGallery() {
                 </div>
                 <div className="p-4">
                   <h3 className="text-lg font-medium text-gray-900">{item.title}</h3>
+                  <p className="text-sm text-gray-700 mb-2">{desc}</p>
                   <p className="text-sm text-gray-500">{new Date(item.date).toLocaleDateString('id-ID')}</p>
                 </div>
               </div>

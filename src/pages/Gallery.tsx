@@ -48,26 +48,32 @@ export default function Gallery() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {gallery.length > 0 ? (
               gallery.map(item => {
-                const firstImage = item.images[0]?.image ?? ''
+                const first = item.images[0]
+                const src = first?.image ? `${API_URL}/storage/${first.image}` : ''
+                const desc = first?.description ?? ''
                 return (
                   <article key={item.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
                     <div className="relative">
                       <img
                         className="w-full h-64 object-cover"
-                        src={typeof firstImage === 'string' ? `${API_URL}/storage/${firstImage}` : ''}
+                        src={src}
                         alt={item.title}
                         loading="lazy"
                       />
                       <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                        <Link to={`/gallery/${item.id}`} className="bg-white text-gray-900 px-4 py-2 rounded-md font-medium" aria-label={item.title}>
+                        <Link
+                          to={`/gallery/${item.id}`}
+                          className="bg-white text-gray-900 px-4 py-2 rounded-md font-medium"
+                        >
                           Lihat Detail
                         </Link>
                       </div>
                     </div>
                     <div className="p-6">
                       <h2 className="text-xl font-semibold text-gray-900 mb-2">{item.title}</h2>
+                      <p className="text-sm text-gray-700 mb-2">{desc}</p>
                       <div className="flex items-center text-sm text-gray-500">
-                        <Calendar className="h-4 w-4 mr-2" aria-hidden="true" />
+                        <Calendar className="h-4 w-4 mr-2" />
                         {new Date(item.date).toLocaleDateString('id-ID', {
                           year: 'numeric',
                           month: 'long',

@@ -102,25 +102,35 @@ export const deleteAnnouncement = async (id: string) =>
 // ==== API Gallery (memerlukan upload file) ====
 export const getGalleryItems = async () => fetchData<GalleryItem[]>('galleries')
 export const getGalleryItem = async (id: string) => fetchData<GalleryItem>(`galleries/${id}`)
-export const addGalleryItem = async (item: Omit<GalleryItem, 'id' | 'images'> & { images: File[] }) => {
+
+export const addGalleryItem = async (
+  item: Omit<GalleryItem, 'id' | 'images'> & { images: File[]; descriptions?: (string | null)[] }
+) => {
   const formData = new FormData()
   formData.append('title', item.title)
   formData.append('date', item.date)
-  item.images.forEach(file => formData.append('images[]', file))
+  item.images.forEach((file, i) => {
+    formData.append('images[]', file)
+    formData.append('descriptions[]', item.descriptions?.[i] ?? '')
+  })
   return fetchMultipartData<GalleryItem>('galleries', {
     method: 'POST',
     body: formData
   })
 }
+
 export const updateGalleryItem = async (
   id: string,
-  item: Partial<Omit<GalleryItem, 'id' | 'images'> & { images?: File[] }>
+  item: Partial<Omit<GalleryItem, 'id' | 'images'> & { images?: File[]; descriptions?: (string | null)[] }>
 ) => {
   const formData = new FormData()
   if (item.title) formData.append('title', item.title)
   if (item.date) formData.append('date', item.date)
   if (item.images) {
-    item.images.forEach(file => formData.append('images[]', file))
+    item.images.forEach((file, i) => {
+      formData.append('images[]', file)
+      formData.append('descriptions[]', item.descriptions?.[i] ?? '')
+    })
   }
   formData.append('_method', 'PUT')
   return fetchMultipartData<GalleryItem>(`galleries/${id}`, {
@@ -128,5 +138,6 @@ export const updateGalleryItem = async (
     body: formData
   })
 }
+
 export const deleteGalleryItem = async (id: string) =>
   fetchData<void>(`galleries/${id}`, { method: 'DELETE' })

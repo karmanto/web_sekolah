@@ -26,6 +26,7 @@ export interface Announcement {
 export interface GalleryImage {
   id: string
   image: string
+  description: string | null
   created_at: string
   updated_at: string
 }
